@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Vidahouse VR</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+	<meta http-equiv="x-ua-compatible" content="IE=edge" />
+	<style>
+		@-ms-viewport { width:device-width; }
+		@media only screen and (min-device-width:800px) { html { overflow:hidden; } }
+		html { height:100%; }
+		body { height:100%; overflow:hidden; margin:0; padding:0; font-family:Arial, Helvetica, sans-serif; font-size:16px; color:#FFFFFF; background-color:#000000; }
+		@keyframes changeContent {
+			0% {
+				transform: rotateY(0deg);
+			}
+			100% {
+				transform: rotateY(90deg);
+			}
+		}
+		@keyframes changeContent1 {
+			0% {
+				transform: rotateY(90deg);
+			}
+			100% {
+				transform: rotateY(0deg);
+			}
+		}
+	</style>
+</head>
+<body>
+<div class="invitationBox" style="position:absolute;z-index:2;width:80%;height:380px;top:0;bottom:0;left:0;right:0;margin:auto;">
+	<img class="welcome" src="../images/welcome.png" alt="" style="display:none;position:absolute;top:0;bottom:0;margin:auto;width:100%;animation: changeContent  0.7s 2s linear forwards;">
+	<img class="invitation" src="../images/invitation.png" alt="" style="display:none;transform: rotateY(90deg); position:absolute;top:0;bottom:0;margin:auto;width:100%;animation:changeContent1 0.7s 2.7s linear forwards;">
+</div>
+<script src="krpano.js"></script>
+<div id="pano" style="width:100%;height:100%;">
+	<noscript><table style="width:100%;height:100%;"><tr style="vertical-align:middle;"><td><div style="text-align:center;">ERROR:<br/><br/>Javascript not activated<br/><br/></div></td></tr></table></noscript>
+	<script>
+		function changeContent () {
+			var welcome = document.getElementsByClassName('welcome');
+			var invitation = document.getElementsByClassName('invitation');
+			if(welcome.length > 0 || invitation.length > 0 ){
+				welcome[0].style.display = "block";
+				invitation[0].style.display = "block"
+			}
+			else{
+				console.log("??");
+			}
+		}
+		function addParam(url){
+				var xml = "<krpano><view fov='100' fovmax='125' fovmin='50'/><events onloadcomplete='skin_setup_littleplanetintro()' /><image><sphere url='" + url + "'/></image></krpano>";
+			embedpano({swf:"tour.swf", xml:"tour.xml", target:"pano", html5:"prefer", mobilescale:1.0, passQueryParameters:true});
+			var krpano = document.getElementById("krpanoSWFObject");
+			krpano.call("loadxml("+xml+")");
+		}
+		var ps = location.search.replace("?", "").split("&");
+		var imageurl = "";
+
+		for(var i = 0; i < ps.length; ++i)
+		{
+			if(ps[i].indexOf("p=") >= 0)
+			{
+				imageurl = ps[i].split("=")[1];
+				break;
+			}
+		}
+		if(imageurl == "")
+		{
+			//return;
+			//imageurl = "http://p360.s.vidahouse.com/FiLlMDcSTkSiUz-f8ywpbDPBUH7f";//set at default value instead of return.
+		}
+		//<events onloadcomplete='delayedcall(2.0, normalview());' />
+
+	</script>
+</div>
+</body>
+</html>
